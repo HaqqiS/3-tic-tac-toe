@@ -1,17 +1,17 @@
 import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-function Square({ value, onSquareClick }) {
+function Square({ value, onSquareClick }) { //component untuk membuat kotak pada game tictactoe menggunakan button
   return (
     <button className="square" onClick={onSquareClick}>
       {value}
     </button>
   );
 }
-function Board({ xIsNext, squares, onPlay }) {
-  function handleClick(i) {
-    if (squares[i] || calculateWinner(squares)) return;
-    const nextSquares = squares.slice();
+function Board({ xIsNext, squares, onPlay }) { //component untuk membungkus 9 kotak dan mengambil nilai xIsNext, squares, dan onPlay
+  function handleClick(i) { //fungsi untuk menghandle klik
+    if (squares[i] || calculateWinner(squares)) return; //jika kotak sudah terisi atau ada pemenang maka tidak bisa diklik
+    const nextSquares = squares.slice(); //membuat salinan array
     /*************************
      *    IF (XISNEXT) {     *
      * NEXTSQUARES[I] = 'X'; *
@@ -19,17 +19,17 @@ function Board({ xIsNext, squares, onPlay }) {
      * NEXTSQUARES[I] = 'O'; *
      *           }           *
      *************************/
-    nextSquares[i] = xIsNext ? "X" : "O";
+    nextSquares[i] = xIsNext ? "X" : "O"; //mengisi kotak sesuai dengan xIsNext atau giliran, menggunakan ternary operator
 
-    onPlay(nextSquares);
+    onPlay(nextSquares); //memanggil fungsi onPlay
   }
 
-  const winner = calculateWinner(squares);
-  let status = "";
+  const winner = calculateWinner(squares); //variable untuk menampung hasil fungsi calculateWinner
+  let status = ""; //variable untuk menampung status permainan
   if (winner) {
-    status = "Winner: " + winner;
+    status = "Winner: " + winner; 
   } else {
-    status = "Next player: " + (xIsNext ? "X" : "O");
+    status = "Next player: " + (xIsNext ? "X" : "O"); //menentukan giliran
   }
 
   return (
@@ -51,22 +51,22 @@ function Board({ xIsNext, squares, onPlay }) {
 }
 
 export default function Game() {
-  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [history, setHistory] = useState([Array(9).fill(null)]); //array untuk menampung history/langkah
   const [currentMove, setCurrentMove] = useState(0);
-  const xIsNext = currentMove % 2 === 0;
-  const currentSquares = history[currentMove];
+  const xIsNext = currentMove % 2 === 0; //menentukan giliran X/O dengan modulus currentMove
+  const currentSquares = history[currentMove]; //untuk menyimpan status papan permainan saat ini berdasarkan langkah yang sedang berlangsung
 
-  function jumpTo(nextMove) {
-    setCurrentMove(nextMove);
+  function jumpTo(nextMove) { //fungsi untuk mengganti langkah dengan mengambil nilai move
+    setCurrentMove(nextMove); 
   }
 
-  function handlePlay(nextSquares) {
+  function handlePlay(nextSquares) { //memperbarui history permainan dengan menambahkan langkah baru ke array history
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
   }
 
-  const moves = history.map((squares, move) => {
+  const moves = history.map((squares, move) => { //hasil dari pemetaan array history yang menghasilkan daftar langkah-langkah permainan.
     let description = "";
     if (move > 0) {
       description = "Go to move #" + move;
@@ -93,8 +93,8 @@ export default function Game() {
   );
 }
 
-function calculateWinner(squares) {
-  const lines = [
+function calculateWinner(squares) { //fungsi untuk menentukan pemenang 
+  const lines = [ //ketentuan untuk menentukan memenang permainan
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -105,7 +105,7 @@ function calculateWinner(squares) {
     [2, 4, 6],
   ];
 
-  for (let i = 0; i < lines.length; i++) {
+  for (let i = 0; i < lines.length; i++) { //perulangan sesuai dengan jumlah ketentuan
     /*******************************
      * CONST A = LINES[I][0]; // 0 *
      * CONST B = LINES[I][1]; // 1 *
@@ -113,8 +113,8 @@ function calculateWinner(squares) {
      *******************************/
     const [a, b, c] = lines[i];
     //State: ["X", "X", "X", "O", "O", null, null, null, null];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c])
-      return squares[a];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) //algoritma untuk menentukan pemenang
+      return squares[a]; //mengembalikan nilai pemenang
   }
-  return false;
+  return false; //mengembalikan nilai false
 }

@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  padding: 3rem;
+  margin: 0;
+}
+
+.square {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #00101d;
+  background-color: #faf0e6;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.board {
+  display: flex;
+  flex-wrap: wrap;
+  width: 180px;
+  height: 180px;
+}
+
+.game {
+  display: flex;
+}
